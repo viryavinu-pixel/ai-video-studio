@@ -1,8 +1,3 @@
-
-
-
-
-
 <script>
 let story = "";
 let scenes = [];
@@ -199,3 +194,97 @@ function exportVideo() {
   setTimeout(() => recorder.stop(), dialogues.length * 3200);
 }
 </script>
+<script>
+// SAFE REAL AI EXTENSIONS — NO BREAKING
+
+// Generate AI Images (Optional Upgrade)
+function generateImagesSafe() {
+  if (!window.scenes || scenes.length === 0) {
+    alert("Generate scenes first!");
+    return;
+  }
+
+  window.images = scenes.map(scene =>
+    "https://image.pollinations.ai/prompt/" + encodeURIComponent(scene.visual || scene.text)
+  );
+
+  alert("✅ AI images generated safely");
+}
+
+// Multi-Character Voice Upgrade (Safe)
+function playVoiceSafe() {
+  if (!window.dialogues || dialogues.length === 0) {
+    alert("Generate scenes first!");
+    return;
+  }
+
+  let synth = window.speechSynthesis;
+  let i = 0;
+
+  function speakNext() {
+    if (i >= dialogues.length) return;
+
+    let d = dialogues[i];
+    let utter = new SpeechSynthesisUtterance(d.line || "");
+
+    utter.rate = 0.95;
+    utter.pitch = d.speaker === "Narrator" ? 0.9 :
+                  d.speaker === "Hero" ? 1.1 : 1.2;
+
+    utter.onend = () => {
+      i++;
+      speakNext();
+    };
+
+    synth.speak(utter);
+  }
+
+  speakNext();
+}
+
+// Enhanced Render Mode (Safe)
+function renderVideoSafe() {
+  let canvas = document.getElementById("videoCanvas");
+  if (!canvas) return alert("Canvas not found");
+
+  let ctx = canvas.getContext("2d");
+  let i = 0;
+
+  function draw() {
+    if (!dialogues || i >= dialogues.length) return;
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, 360, 640);
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 18px Arial";
+    ctx.fillText("AI MICRO DRAMA", 60, 60);
+
+    ctx.font = "16px Arial";
+    wrapText(ctx, dialogues[i].speaker + ": " + dialogues[i].line, 20, 500, 320, 22);
+
+    i++;
+    setTimeout(draw, 2200);
+  }
+
+  draw();
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  let words = text.split(" ");
+  let line = "";
+
+  for (let n = 0; n < words.length; n++) {
+    let testLine = line + words[n] + " ";
+    if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      line = words[n] + " ";
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, y);
+}
+</script>
+
